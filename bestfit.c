@@ -1,39 +1,70 @@
-#include<stdio.h>
-#include<stdlib.h>
-void main()
+/ C Program for Worst Fit
+#include <stdio.h>
+
+void implimentBestFit(int blockSize[], int blocks, int processSize[], int processes)
 {
-int a[20],p[20],i,j,n,m;
-printf("Enter no of Blocks.\n");
-scanf("%d",&n);
-for(i=0;i<n;i++)
-{
-                        printf("Enter the %dst Block size:",i);
-                        scanf("%d",&a[i]);
+    // This will store the block id of the allocated block to a process
+    int allocation[processes];
+    
+    // initially assigning -1 to all allocation indexes
+    // means nothing is allocated currently
+    for(int i = 0; i < processes; i++){
+        allocation[i] = -1;
+    }
+ 
+    // pick each process and find suitable blocks
+    // according to its size ad assign to it
+    for (int i=0; i<processes; i++)
+    {
+        
+        int indexPlaced = -1;
+        for (int j=0; j<blocks; j++) 
+        { 
+            if (blockSize[j] >= processSize[i])
+            {
+                // place it at the first block fit to accomodate process
+                if (indexPlaced == -1)
+                    indexPlaced = j;
+                    
+                // if any future block is better that is 
+                // any future block with smaller size encountered
+                // that can accomodate the given process
+                else if (blockSize[j] < blockSize[indexPlaced])
+                    indexPlaced = j;
+            }
+        }
+ 
+        // If we were successfully able to find block for the process
+        if (indexPlaced != -1)
+        {
+            // allocate this block j to process p[i]
+            allocation[i] = indexPlaced;
+ 
+            // Reduce available memory for the block
+            blockSize[indexPlaced] -= processSize[i];
+        }
+    }
+ 
+    printf("\nProcess No.\tProcess Size\tBlock no.\n");
+    for (int i = 0; i < processes; i++)
+    {
+        printf("%d \t\t\t %d \t\t\t", i+1, processSize[i]);
+        if (allocation[i] != -1)
+            printf("%d\n",allocation[i] + 1);
+        else
+            printf("Not Allocated\n");
+    }
 }
-printf("Enter no of Process.\n");
-scanf("%d",&m);
-for(i=0;i<m;i++)
+ 
+// Driver code
+int main()
 {
-                        printf("Enter the size of %dst Process:",i);
-                        scanf("%d",&p[i]);
-}
-            for(i=0;i<n;i++)
-{
-for(j=0;j<m;j++)
-                        {
-                                    if(p[j]<=a[i])
-                                    {
-                                                printf("The Process %d allocated to %d\n",j,a[i]);
-                                                p[j]=10000;
-                                                break;
-                                    }
-                        }
-}
-for(j=0;j<m;j++)
-{
-if(p[j]!=10000)
-                        {
-printf("The Process %d is not allocated\n",j);
-                        }
-}
+    int blockSize[] = {50, 20, 100, 90};
+    int processSize[] = {10, 30, 60, 30};
+    int blocks = sizeof(blockSize)/sizeof(blockSize[0]);
+    int processes = sizeof(processSize)/sizeof(processSize[0]);
+ 
+    implimentBestFit(blockSize, blocks, processSize, processes);
+ 
+    return 0 ;
 }
