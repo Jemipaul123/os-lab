@@ -1,63 +1,39 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#define MAX_MEMORY 1024 // maximum memory size
-int memory[MAX_MEMORY]; // memory array
-int num_processes = 0; // number of processes
-
-// allocate memory using best fit algorithm
-int bestFit(int process_size)
+#include<stdio.h>
+#include<stdlib.h>
+void main()
 {
-    int best_fit = MAX_MEMORY+1, best_index = -1;
-    for(int i=0; i<MAX_MEMORY; i++)
-    {
-        if(memory[i] == 0)
-        {
-            int j = i;
-            while(memory[j] == 0 && j < MAX_MEMORY && j-i+1 < process_size)
-                j++;
-            if(j-i+1 >= process_size && j-i+1 < best_fit)
-            {
-                best_fit = j-i+1;
-                best_index = i;
-            }
-            i = j;
-        }
-    }
-    if(best_index != -1)
-    {
-        for(int k=best_index; k<best_index+process_size; k++)
-            memory[k] = num_processes+1;
-        return best_index;
-    }
-    return -1; // memory allocation failed
+int a[20],p[20],i,j,n,m;
+printf("Enter no of Blocks.\n");
+scanf("%d",&n);
+for(i=0;i<n;i++)
+{
+                        printf("Enter the %dst Block size:",i);
+                        scanf("%d",&a[i]);
 }
-
-// main function
-int main()
+printf("Enter no of Process.\n");
+scanf("%d",&m);
+for(i=0;i<m;i++)
 {
-    int choice, process_size, process_id;
-    printf("1. Allocate Memory using Best Fit\n2. Exit\n");
-    while(1)
-    {
-        printf("\nEnter your choice: ");
-        scanf("%d", &choice);
-        switch(choice)
-        {
-            case 1: printf("\nEnter process size: ");
-                    scanf("%d", &process_size);
-                    process_id = bestFit(process_size);
-                    if(process_id == -1)
-                        printf("\nMemory allocation failed!\n");
-                    else
-                    {
-                        num_processes++;
-                        printf("\nMemory allocated successfully to process %d\n", process_id+1);
-                    }
-                    break;
-            case 2: exit(0);
-            default: printf("\nInvalid choice!\n");
-        }
-    }
-    return 0;
+                        printf("Enter the size of %dst Process:",i);
+                        scanf("%d",&p[i]);
+}
+            for(i=0;i<n;i++)
+{
+for(j=0;j<m;j++)
+                        {
+                                    if(p[j]<=a[i])
+                                    {
+                                                printf("The Process %d allocated to %d\n",j,a[i]);
+                                                p[j]=10000;
+                                                break;
+                                    }
+                        }
+}
+for(j=0;j<m;j++)
+{
+if(p[j]!=10000)
+                        {
+printf("The Process %d is not allocated\n",j);
+                        }
+}
 }
