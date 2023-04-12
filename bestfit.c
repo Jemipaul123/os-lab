@@ -55,4 +55,9 @@ int main()
                         printf("\nMemory allocated successfully to process %d\n", process_id+1);
                     }
                     break;
-            case 2: exit(
+            case 2: exit(0);
+            default: printf("\nInvalid choice!\n");
+        }
+    }
+    return 0;
+}
