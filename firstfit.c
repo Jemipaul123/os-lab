@@ -9,6 +9,7 @@ int num_processes = 0; // number of processes
 int firstFit(int process_size)
 {
     for(int i=0; i<MAX_MEMORY; i++)
+        
     {
         if(memory[i] == 0)
         {
