@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 
 int main() {
@@ -60,5 +59,3 @@ int main() {
     printf("\nPage Faults: %d\n", fcount);
     return 0;
 }
-
-
