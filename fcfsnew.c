@@ -1,38 +1,72 @@
-#include<stdio.h>
-#include<conio.h>
-#define max 30
+#include <stdio.h>
 
-void main()
+int main()
 {
-    int i,j,n,bt[max],at[max],wt[max],tat[max],temp[max];
-    float awt=0,atat =0;
-    printf("enter the number of processes");
-    scanf("%d",&n);
-    printf("enter the burst times");
-    for(i=0;i<n;i++)
-    {
-        scanf("%d",&bt[i]);
-    }
-     printf("enter the arrival times");
-    for(i=0;i<n;i++)
-    {
-        scanf("%d",&at[i]);
-    }
-    printf("process\t bt\t at\t wt\t tat\n");
-    temp[0]=0;
-    for(i=0;i<n;i++)
-    {   wt[i]=0;
-        tat[i]=0;
-        temp[i+1]=temp[i]+ bt[i];
-        wt[i]=temp[i]-at[i];
-        tat[i]=bt[i]+wt[i];
 
-    awt=awt +wt[i];
-    atat= atat+tat[i];
- printf("%d\t %d\t %d\t %d\t %d\n",i+1,bt[i],at[i],wt[i],tat[i]);
+    int process[10], at[10], bt[10], tat[10], wt[10], ct[10];
+    int n, temp, ttat, twt;
+    float avwt, avtat;
+    printf("Enter the no of processes\n");
+    scanf("%d", &n);
+    printf("Enter the arrival time and burst time of each process\n");
+    for (int i = 0; i < n; i++)
+    {
+        process[i] = i;
+        printf(" P%d", i);
+        scanf("%d", &at[i]);
+        scanf("%d", &bt[i]);
     }
-    awt=awt/n;
-    atat=atat/n;
-    printf("Avg wait time %f",awt);
-    printf("Avg tat %f",atat);
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            if (at[i] > at[j])
+            {
+                temp = at[i];
+                at[i] = at[j];
+                at[j] = temp;
+
+                temp = bt[i];
+                bt[i] = bt[j];
+                bt[j] = temp;
+
+                temp = process[i];
+                process[i] = process[j];
+                process[j] = temp;
+            }
+        }
+    }
+
+
+    ct[0] = bt[0] + at[0];
+    wt[0] = 0;
+    tat[0] = bt[0] + wt[0];
+    ttat = tat[0];
+    twt = wt[0];
+
+    for (int i = 1; i < n; i++)
+    {
+        if (at[i] <= ct[i - 1])
+        {
+            wt[i] = ct[i - 1] - at[i];
+        }
+        else
+            wt[i] = 0;
+        tat[i] = wt[i] + bt[i];
+        ttat = ttat + tat[i];
+        twt = twt + wt[i];
+        ct[i] = tat[i] + at[i];
+    }
+
+    avwt = (float)twt / (float)n;
+    avtat = (float)ttat / (float)n;
+    printf("Process ID\tArrival Time\tBurst Time\tWaiting Time\tCompletion time\tTAT\n");
+
+    for (int i = 0; i < n; i++)
+    {
+        printf("p");
+        printf("%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n", process[i], at[i], bt[i], wt[i], ct[i], tat[i]);
+    }
+    printf("\nAverage Waiting time is %f\n", avwt);
+    printf("Average Turn Around Time is %f\n", avtat);
 }
